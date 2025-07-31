@@ -18,10 +18,11 @@ def time_it(func):
         if isinstance(result, str):
             print(result)
         elif isinstance(result, np.ndarray):
-            print(result)  # NumPy arrays print nicely by default
+            pass  # print(result)  # NumPy arrays print nicely by default
         else:  # Assuming it's a list of lists for your custom function
-            for row in result:
-                print(row)
+            pass
+            # for row in result:
+            #     print(row)
         print(f"Time taken: {elapsed_time:.6f} seconds")
         return result
 
@@ -69,8 +70,8 @@ def gen_mat(row, col):
     return mat
 
 
-mat1_list = gen_mat(15, 23)
-mat2_list = gen_mat(23, 63)
+mat1_list = gen_mat(500, 1000)
+mat2_list = gen_mat(1000, 5000)
 
 # --- Custom Matrix Multiplication Execution ---
 print("--- Custom Matrix Multiplication ---")
@@ -122,6 +123,9 @@ def numpy_multiply_function(a, b):
         return f"Error: np.multiply failed - {e}"
 
 
+import torch
+
+
 # Execute NumPy operations with the decorator
 numpy_dot(a_np, b_np)
 numpy_matmul(a_np, b_np)
@@ -135,9 +139,28 @@ numpy_elementwise_multiply(a_np, b_np)
 numpy_multiply_function(a_np, b_np)
 
 # This will pass as the dimentions match
-mat1_list = gen_mat(5, 6)
-mat2_list = gen_mat(5, 6)
-a_np = np.array(mat1_list)
-b_np = np.array(mat2_list)
-numpy_elementwise_multiply(a_np, b_np)
-numpy_multiply_function(a_np, b_np)
+# mat1_list = gen_mat(5, 6)
+# mat2_list = gen_mat(6, 6)
+# a_np = np.array(mat1_list)
+# b_np = np.array(mat2_list)
+# numpy_elementwise_multiply(a_np, b_np)
+# numpy_multiply_function(a_np, b_np)
+
+
+print(torch.cuda.is_available())
+if not torch.cuda.is_available():
+    device = torch.device("cpu")
+else:
+    device = torch.device("cuda")
+a_np.shape
+matrix_a = torch.from_numpy(a_np).to(device).float()
+matrix_b = torch.from_numpy(b_np).to(device).float()
+
+
+@time_it
+def gpu_mul(a, b):
+    print("multiply using gpu")
+    return torch.matmul(a, b)
+
+
+gpu_mul(matrix_a, matrix_b)

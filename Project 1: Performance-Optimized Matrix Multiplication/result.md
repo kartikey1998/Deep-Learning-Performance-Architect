@@ -71,3 +71,15 @@ Matrix multiplication is a prime example of where the distinction between CPU-bo
 
 * A **CPU-bound operation** is one whose speed is limited by the CPU's processing power, *regardless* of how efficiently that power is being used. A poorly optimized algorithm that keeps the CPU busy with many sequential operations is CPU-bound.
 * A **vector-accelerated operation** is a specific way of *optimizing* CPU-bound (or GPU-bound) tasks by leveraging parallel processing capabilities (like SIMD instructions) to perform operations on multiple data points simultaneously, leading to significantly faster execution. The goal is to make the CPU (or GPU) work *more efficiently* on the computational task at hand.
+
+The GPU made an astronomical difference for large matrix multiplication.
+
+In your results:
+
+Custom CPU code (Python): Took 166 seconds.
+
+Optimized CPU libraries (NumPy): Took ~2.9 seconds. This is a ~57x speedup over custom Python.
+
+GPU (PyTorch/CUDA): Took ~0.12 seconds. This is a ~24x speedup over NumPy on CPU, and an astonishing ~1380x speedup over your custom Python code!
+
+In short, the GPU transformed a task that took nearly 3 minutes on a simple Python loop into a blink-of-an-eye operation (125 milliseconds), fundamentally due to its massive parallel processing power tailored for such numerical tasks.
